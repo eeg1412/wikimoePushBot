@@ -247,7 +247,7 @@ class TelegramRSSBot {
     const title = article.title || '无标题'
     const link = article.link || ''
 
-    let message = `${feedTitle} 有新内容\n\n`
+    let message = `${feedTitle} 有新内容啦！！\n\n`
     message += `${title}\n\n`
 
     // if (pubDate) {
