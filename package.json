@@ -1,0 +1,28 @@
+{
+  "name": "telegram-rss-bot",
+  "version": "1.0.0",
+  "description": "Telegram机器人，用于定时扫描RSS并发送新文章到群组",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js",
+    "setup": "node setup.js",
+    "test-rss": "node test-rss.js"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "rss",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
