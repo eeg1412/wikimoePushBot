@@ -40,6 +40,7 @@ class TelegramRSSBot {
     this.lastArticles = new Map()
     this.intervalId = null
     this.isScanning = false
+    this.isStop = false
     this.stats = {
       totalScans: 0,
       totalArticlesSent: 0,
@@ -228,6 +229,10 @@ class TelegramRSSBot {
 
     try {
       for (const url of this.rssUrls) {
+        if (this.isStop) {
+          console.log('🛑 扫描已停止，跳过剩余RSS源')
+          break
+        }
         try {
           const newArticlesCount = await this.processRSSFeed(url)
           totalNewArticles += newArticlesCount
@@ -240,7 +245,9 @@ class TelegramRSSBot {
         }
       }
 
-      await this.saveData()
+      if (!this.isStop) {
+        await this.saveData()
+      }
 
       console.log(
         `✅ [${formatServerTime()}] RSS扫描完成，发现 ${totalNewArticles} 篇新文章`
@@ -288,6 +295,10 @@ class TelegramRSSBot {
 
               // 发送新文章到群组（按时间顺序，最新的在前面）
               for (const article of newArticles.reverse()) {
+                if (this.isStop) {
+                  console.log('🛑 扫描已停止，跳过剩余消息发送')
+                  break
+                }
                 await this.sendToGroups(article, feed.title)
                 this.stats.totalArticlesSent++
 
@@ -395,11 +406,13 @@ class TelegramRSSBot {
     // 停止定时任务
     this.stopScheduler()
 
+    this.isStop = true
+
     // 等待当前扫描完成
-    while (this.isScanning) {
-      console.log('⏳ 等待当前扫描完成...')
-      await new Promise(resolve => setTimeout(resolve, 1000))
-    }
+    // while (this.isScanning) {
+    //   console.log('⏳ 等待当前扫描完成...')
+    //   await new Promise(resolve => setTimeout(resolve, 1000))
+    // }
 
     // 停止机器人轮询
     await this.bot.stopPolling()
