@@ -68,16 +68,6 @@ DATA_FILE=rss_data.json
 
 ### 6. 运行机器人
 
-**方法 1: 使用配置向导 (推荐)**
-
-```bash
-# 运行配置向导
-npm run setup
-
-# 启动机器人
-npm start
-```
-
 ## 配置说明
 
 ### 环境变量

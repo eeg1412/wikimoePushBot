@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node bot.js",
     "dev": "nodemon bot.js",
-    "setup": "node setup.js",
     "test-rss": "node test-rss.js"
   },
   "keywords": [
