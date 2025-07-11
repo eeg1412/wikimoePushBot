@@ -22,6 +22,19 @@ function formatServerTime(date = new Date()) {
   )
 }
 
+function cutTextByLength(str, maxLen) {
+  if (!str) return ''
+  // [...str] 可以正确处理 emoji 和中文等多字节字符
+  const arr = [...str]
+  if (arr.length <= maxLen) return str
+  return arr.slice(0, maxLen).join('') + '...'
+}
+
+function removeLineBreaks(str) {
+  if (!str) return ''
+  return str.replace(/[\r\n]+/g, '')
+}
+
 class TelegramRSSBot {
   constructor() {
     // 初始化配置
@@ -342,8 +355,9 @@ class TelegramRSSBot {
 
   // 发送消息到所有群组
   async sendToGroups(article, feedTitle) {
-    const title = article.title || '无标题'
+    const title = cutTextByLength(article.title || '无标题', 200)
     const link = article.link || ''
+    const contentSnippet = removeLineBreaks(article.contentSnippet || '')
 
     let message = `${feedTitle} 有新内容啦！！\n\n`
     message += `${title}\n\n`
@@ -351,6 +365,10 @@ class TelegramRSSBot {
     // if (pubDate) {
     //   message += `${pubDate}\n`
     // }
+
+    if (contentSnippet) {
+      message += `${cutTextByLength(contentSnippet, 200)}\n\n`
+    }
 
     if (link) {
       message += `${link}`
